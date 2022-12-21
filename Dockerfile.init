@@ -1,0 +1,7 @@
+FROM postgres:15.1
+RUN mkdir /initdb
+COPY ./init_db.sh /initdb
+COPY ./db_script /initdb/db_script
+
+WORKDIR /initdb
+CMD ["./init_db.sh"]
