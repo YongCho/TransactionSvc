@@ -24,5 +24,6 @@ func (s *Server) Run(listenPort int) {
 	r.Use(gin.Recovery())
 	r.POST("/accounts", s.handler.CreateAccount)
 	r.GET("/accounts/:id", s.handler.GetAccount)
+	r.POST("/transactions", s.handler.CreateTransaction)
 	r.Run(fmt.Sprintf(":%d", listenPort))
 }
