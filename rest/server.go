@@ -2,41 +2,26 @@ package rest
 
 import (
 	"fmt"
-	"log"
-	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 // Server encapsulates the logic for initializing the REST server.
 type Server struct {
-	handlers []handler
-}
-
-type handler struct {
-	path string
-	fn   http.HandlerFunc
+	handler *Handler
 }
 
 // NewServer creates a new instance of Server.
-func NewServer() *Server {
-	return &Server{}
-}
-
-// AddHandlerFunc adds a new endpoint to the Server.
-// Call this function one or more times to add endpoints to the server
-// before starting the server.
-func (s *Server) AddHandlerFunc(path string, fn http.HandlerFunc) {
-	s.handlers = append(s.handlers, handler{
-		path: path,
-		fn:   fn,
-	})
-}
-
-func (s *Server) ListenAndServe(port int) {
-	mux := http.NewServeMux()
-	for _, h := range s.handlers {
-		mux.Handle(h.path, h.fn)
+func NewServer(handler *Handler) *Server {
+	return &Server{
+		handler: handler,
 	}
-	listenAddr := fmt.Sprintf(":%d", port)
-	log.Printf("Server listening on %s", listenAddr)
-	http.ListenAndServe(listenAddr, mux)
+}
+
+func (s *Server) Run(listenPort int) {
+	gin.SetMode(gin.ReleaseMode)
+	r := gin.New()
+	r.Use(gin.Recovery())
+	r.POST("/accounts", s.handler.CreateAccount)
+	r.Run(fmt.Sprintf(":%d", listenPort))
 }

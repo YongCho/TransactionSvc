@@ -28,7 +28,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	server := rest.NewServer()
-	server.AddHandlerFunc("/accounts", handler.CreateAccount)
-	server.ListenAndServe(util.Env.GetListenPort())
+	server := rest.NewServer(handler)
+	server.Run(util.Env.GetListenPort())
 }
