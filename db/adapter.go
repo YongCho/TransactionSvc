@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"pismo.io/sqlc"
+	"pismo.io/db/sqlc"
 )
 
 type DBAdapter struct {

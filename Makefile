@@ -2,7 +2,7 @@ SQLC_IMAGE := kjconroy/sqlc:1.16.0
 
 generate:
 	docker pull $(SQLC_IMAGE)
-	docker run --rm -v $(PWD):/src -w /src $(SQLC_IMAGE) generate
+	docker run --rm -v $(PWD):/src -w /src/sqlc $(SQLC_IMAGE) generate
 
 build: generate
 	docker compose build
