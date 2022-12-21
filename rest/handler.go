@@ -60,3 +60,36 @@ func (a *Handler) CreateAccount(c *gin.Context) {
 	resp := Resp{ID: account.ID, DocumentNumber: account.DocumentNumber}
 	c.JSON(http.StatusOK, resp)
 }
+
+// GetAccount is the HTTP handler function for fetching an account.
+func (a *Handler) GetAccount(c *gin.Context) {
+	type Req struct {
+		ID int32 `uri:"id" binding:"required"`
+	}
+
+	type Resp struct {
+		ID             int32
+		DocumentNumber string `json:"document_number"`
+	}
+
+	// Read the account ID in URL.
+	var data Req
+	err := c.BindUri(&data)
+	if err != nil {
+		resp := GenericResponse{Error: fmt.Sprintf("Could not parse account ID: %s", err)}
+		c.JSON(http.StatusBadRequest, resp)
+		return
+	}
+
+	// Get the account.
+	account, err := a.dbAdapter.GetAccount(data.ID)
+	if err != nil {
+		resp := GenericResponse{Error: fmt.Sprintf("Could not fetch the account: %s", err)}
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+
+	// Construct and send back the response.
+	resp := Resp{ID: account.ID, DocumentNumber: account.DocumentNumber}
+	c.JSON(http.StatusOK, resp)
+}
