@@ -1,7 +1,6 @@
 package rest
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -25,14 +24,6 @@ func NewHandler(dbAdapter *db.DBAdapter) (*Handler, error) {
 	return &Handler{
 		dbAdapter: dbAdapter,
 	}, nil
-}
-
-// Error is a helper function to send an common error response in JSON format.
-func (a *Handler) Error(w http.ResponseWriter, msg string, code int) {
-	resp := GenericResponse{Error: msg}
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.WriteHeader(code)
-	json.NewEncoder(w).Encode(resp)
 }
 
 // CreateAccount is the HTTP handler function for creating a new account.
