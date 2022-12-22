@@ -48,7 +48,6 @@ down: dotenv
 clean: down
 	docker image rm -f $(API_SERVER_IMAGE) $(DB_INIT_IMAGE) $(POSTGRES_IMAGE)
 	docker volume rm -f pismo_pismo-data
-	rm -f .env
 
 # Clean up and rebuild the services from scratch.
 .PHONY: reset
