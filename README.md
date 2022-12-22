@@ -72,25 +72,22 @@ curl -X POST http://localhost:8080/transactions -H "Content-Type: application/js
 
 ## Components
 
-The transaction service has the following components.
+The transaction service has the following containers.
 
-- REST API Server
-- Database
-- DB Init Container
-
-### REST API Server
-
-The REST API server is responsible for handling the HTTP requests.
-### Database
-
-A Postgres database is used to store the account and transaction data.
-
-### DB Init Container
-
-The init container is run once during the service start-up to create the database tables and initializing them with necessary data. It can be extended in the future to handle database migration.
+- `pismo-api`: a REST API server for handling the HTTP requests.
+- `pismo-db`: a Postgres database used for storing the account and transaction data.
+- `pismo-dbinit`: a ephemeral container used for initializing the database.
 
 ## Development
-The project was developed in Visual Studio Code on a Linux machine. Go extension (golang.go) is highly recommended.
+The project was developed in Visual Studio Code on a Linux machine. Installing Go extension (golang.go) is highly recommended.
+
+There are some notable external libraries used in the code to facilitate the development.
+
+### SQLC
+[sqlc](https://docs.sqlc.dev/en/stable/index.html#) is used for generating Go code for interacting with the database.
+
+### Gin-Gonic
+[gin-gonic](https://gin-gonic.com/docs/introduction/) is a HTTP web framework used for implementing the REST server.
 
 ## TODO
-- Write tests.
+- Increase test coverage.
