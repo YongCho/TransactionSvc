@@ -5,10 +5,15 @@ This is a simple credit card transaction service written in Go.
 ## Requirements
 - Linux
 - Docker
+- Ports 8080 and 5432 available
 
 This project was written with a Linux server in mind. It may need some modification to work on Windows. If Windows runtime is desired, please email me, and I can make the change.
 
 Also, the project was developed and tested using Docker Engine version `20.10`.
+
+The following ports must be available for binding:
+- `8080`: Used for serving the REST API.
+- `5432`: Used for connecting to the database, mainly for development purpose.
 
 ## Build and Run
 
