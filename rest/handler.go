@@ -6,13 +6,13 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"pismo.io/db"
+	txn "pismo.io/transaction"
 	"pismo.io/util"
 )
 
 // Handler implements the REST API handler logic.
 type Handler struct {
-	dbAdapter *db.DBAdapter
+	txnMgr *txn.TransactionMgr
 }
 
 // GenericResponse is the response payload for any requests
@@ -23,9 +23,9 @@ type GenericResponse struct {
 }
 
 // NewHandler creates a new instance of Handler.
-func NewHandler(dbAdapter *db.DBAdapter) (*Handler, error) {
+func NewHandler(txnMgr *txn.TransactionMgr) (*Handler, error) {
 	return &Handler{
-		dbAdapter: dbAdapter,
+		txnMgr: txnMgr,
 	}, nil
 }
 
@@ -50,7 +50,7 @@ func (a *Handler) CreateAccount(c *gin.Context) {
 	}
 
 	// Create the new account.
-	account, err := a.dbAdapter.CreateAccount(data.DocumentNumber)
+	account, err := a.txnMgr.CreateAccount(data.DocumentNumber)
 	if err != nil {
 		resp := GenericResponse{Error: fmt.Sprintf("Could not persist new account: %s", err)}
 		c.JSON(http.StatusInternalServerError, resp)
@@ -85,7 +85,7 @@ func (a *Handler) GetAccount(c *gin.Context) {
 	}
 
 	// Get the account.
-	account, err := a.dbAdapter.GetAccount(data.ID)
+	account, err := a.txnMgr.GetAccount(data.ID)
 	if err != nil {
 		resp := GenericResponse{Error: fmt.Sprintf("Could not fetch the account: %s", err)}
 		c.JSON(http.StatusInternalServerError, resp)
@@ -121,9 +121,8 @@ func (a *Handler) CreateTransaction(c *gin.Context) {
 		return
 	}
 
-	// Create the transaction. Store the money in cents to avoid float precision issue.
-	cents := util.DollarToCents(data.Amount)
-	transaction, err := a.dbAdapter.CreateTransaction(data.AccountID, data.OperationTypeID, cents)
+	// Create the transaction.
+	transaction, err := a.txnMgr.CreateTransaction(data.AccountID, data.OperationTypeID, data.Amount)
 	if err != nil {
 		resp := GenericResponse{Error: fmt.Sprintf("Could not persist the transaction: %s", err)}
 		c.JSON(http.StatusInternalServerError, resp)

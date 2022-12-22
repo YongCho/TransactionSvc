@@ -6,6 +6,7 @@ import (
 
 	"pismo.io/db"
 	"pismo.io/rest"
+	"pismo.io/transaction"
 	"pismo.io/util"
 
 	_ "github.com/lib/pq"
@@ -26,8 +27,15 @@ func main() {
 		os.Exit(1)
 	}
 
+	// Create the transaction manager.
+	txnMgr, err := transaction.NewTransactionMgr(dbAdapter)
+	if err != nil {
+		log.Printf("Could not create transaction manager: %s", err)
+		os.Exit(1)
+	}
+
 	// Create a REST API handler object.
-	handler, err := rest.NewHandler(dbAdapter)
+	handler, err := rest.NewHandler(txnMgr)
 	if err != nil {
 		log.Printf("Could not create API handler: %s", err)
 		os.Exit(1)

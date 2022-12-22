@@ -80,6 +80,5 @@ The project was developed in Visual Studio Code on a Linux machine. Go extension
 
 ## TODO
 - Clean up docker compose environment variables.
-- Create a package for processing transactions. Don't call db adapter directly from the HTTP handler.
 - Add necessary indexes.
 - Write tests.
