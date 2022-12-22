@@ -79,6 +79,5 @@ The init container is run once during the service start-up to create the databas
 The project was developed in Visual Studio Code on a Linux machine. Go extension (golang.go) is highly recommended.
 
 ## TODO
-- Clean up docker compose environment variables.
 - Add necessary indexes.
 - Write tests.

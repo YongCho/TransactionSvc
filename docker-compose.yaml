@@ -5,45 +5,47 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.api
-    image: pismo
+    image: ${API_SERVER_IMAGE}
     restart: always
     ports:
       - 8080:8080
     environment:
       REST_PORT: 8080
-      # TODO: don't hardcode credentials
       DB_HOST: pismo-db
       DB_PORT: 5432
-      DB_USER: pismo
-      DB_PASSWORD: pismo
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
       DB_DBNAME: pismo
-
-  pismo-db:
-    image: postgres:15.1
-    restart: always
-    ports:
-      - 5432:5432
-    environment:
-      # TODO: don't hardcode credentials
-      POSTGRES_USER: pismo
-      POSTGRES_PASSWORD: pismo
-      POSTGRES_DB: pismo
-    volumes:
-      - pismo-data:/var/lib/postgresql/data
+    depends_on:
+      - pismo-db
+      - pismo-dbinit
 
   pismo-dbinit:
     build:
       context: .
       dockerfile: Dockerfile.dbinit
-    image: pismo-dbinit
+    image: ${DB_INIT_IMAGE}
     restart: 'on-failure:2'
     environment:
-      # TODO: don't hardcode credentials
       DB_HOST: pismo-db
       DB_PORT: 5432
-      DB_USER: pismo
-      DB_PASSWORD: pismo
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
       DB_DBNAME: pismo
+    depends_on:
+      - pismo-db
+
+  pismo-db:
+    image: ${POSTGRES_IMAGE}
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: pismo
+    volumes:
+      - pismo-data:/var/lib/postgresql/data
 
 volumes:
   pismo-data:
