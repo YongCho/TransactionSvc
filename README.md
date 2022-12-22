@@ -56,25 +56,25 @@ make clean
 Create a new account.
 
 ```bash
-curl -X POST http://localhost:8080/accounts -H "Content-Type: application/json" --data '{"document_number": "F432"}'
+curl -X POST http://localhost:8080/accounts -H "Content-Type: application/json" --data '{"document_number": "F431"}'
 
-# {"ID":2,"document_number":"F432"}
+# {"id":1,"document_number":"F431"}
 ```
 
 Fetch an existing account.
 
 ```bash
-curl -X GET http://localhost:8080/accounts/2
+curl -X GET http://localhost:8080/accounts/1
 
-# {"ID":2,"document_number":"F432"}
+# {"id":1,"document_number":"F431"}
 ```
 
 Create a new transaction.
 
 ```bash
-curl -X POST http://localhost:8080/transactions -H "Content-Type: application/json" --data '{"account_id": 2, "operation_type_id": 4, "amount": 59.99}'
+curl -X POST http://localhost:8080/transactions -H "Content-Type: application/json" --data '{"account_id": 1, "operation_type_id": 1, "amount": -59.99}'
 
-# {"ID":2,"account_id":2,"operation_type_id":4,"Amount":59.99}
+# {"id":1,"account_id":1,"operation_type_id":1,"amount":-59.99,"created_at":"2022-12-22T19:27:05Z"}
 ```
 
 ## Components
