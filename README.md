@@ -52,7 +52,7 @@ Use the following command to stop the services and clean up all containers and d
 make clean
 ```
 
-## Example
+## API Request Example
 Create a new account.
 
 ```bash
