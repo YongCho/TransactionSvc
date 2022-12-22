@@ -63,4 +63,5 @@ reset: clean up
 
 .PHONY: test
 test: up
+	go clean -testcache
 	REST_PORT=$(REST_PORT) go test -v ./cmd/systest/...
