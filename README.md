@@ -8,6 +8,8 @@ This is a simple credit card transaction service written in Go.
 
 This project is written with a Linux server in mind. It may need some modification to work on Windows. If Windows runtime is desired, please email me, and I can make the change.
 
+Also, the project was developed and tested using Docker Engine version `20.10`.
+
 ## Build and Run
 
 ### Build
