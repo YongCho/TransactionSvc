@@ -55,7 +55,7 @@ down: dotenv
 .PHONY: clean
 clean: down
 	docker image rm -f $(API_SERVER_IMAGE) $(DB_INIT_IMAGE) $(POSTGRES_IMAGE)
-	docker volume rm -f pismo_pismo-data
+	docker volume rm -f transactionsvc_pismo-data
 
 # Clean up and rebuild the services from scratch.
 .PHONY: reset
