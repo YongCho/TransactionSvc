@@ -1,5 +1,16 @@
 package transaction
 
+import "time"
+
+type OpType int32
+
+const (
+	Purchase      OpType = 1
+	Installments  OpType = 2
+	Withdrawal    OpType = 3
+	CreditVoucher OpType = 4
+)
+
 type Account struct {
 	ID             int32
 	DocumentNumber string

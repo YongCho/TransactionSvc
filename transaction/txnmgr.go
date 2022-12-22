@@ -1,6 +1,8 @@
 package transaction
 
 import (
+	"fmt"
+
 	"pismo.io/db"
 	"pismo.io/util"
 )
@@ -43,10 +45,23 @@ func (t *TransactionMgr) GetAccount(id int32) (Account, error) {
 }
 
 // CreateTransaction creates a new transaction record.
-// Money value is stored in cents to avoid float precision issue.
-func (t *TransactionMgr) CreateTransaction(accountID int32, opTypeID int32, amount float64) (Transaction, error) {
+func (t *TransactionMgr) CreateTransaction(accountID int32, opType OpType, amount float64) (Transaction, error) {
+	switch opType {
+	case Purchase:
+		fallthrough
+	case Withdrawal:
+		if amount >= 0 {
+			return Transaction{}, fmt.Errorf("amount must be negative for operation type %d", opType)
+		}
+	case CreditVoucher:
+		if amount <= 0 {
+			return Transaction{}, fmt.Errorf("amount must be positive for operation type %d", opType)
+		}
+	}
+
+	// Money value is stored in cents to avoid float precision issue.
 	amountCents := util.DollarToCents(amount)
-	result, err := t.dbAdapter.CreateTransaction(accountID, opTypeID, amountCents)
+	result, err := t.dbAdapter.CreateTransaction(accountID, int32(opType), amountCents)
 	if err != nil {
 		return Transaction{}, err
 	}
