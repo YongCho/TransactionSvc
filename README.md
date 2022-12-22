@@ -93,3 +93,4 @@ There are some notable external libraries used in the code to facilitate the dev
 
 ## TODO
 - Increase test coverage.
+- Make sure concurrent transactions are handled correctly.
