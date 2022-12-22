@@ -37,7 +37,7 @@ func (a *Handler) CreateAccount(c *gin.Context) {
 	}
 
 	type Resp struct {
-		ID             int32
+		ID             int32  `json:"id"`
 		DocumentNumber string `json:"document_number"`
 	}
 
@@ -72,7 +72,7 @@ func (a *Handler) GetAccount(c *gin.Context) {
 	}
 
 	type Resp struct {
-		ID             int32
+		ID             int32  `json:"id"`
 		DocumentNumber string `json:"document_number"`
 	}
 
@@ -101,17 +101,17 @@ func (a *Handler) GetAccount(c *gin.Context) {
 // CreateTransaction is the HTTP handler function creating a new transaction.
 func (a *Handler) CreateTransaction(c *gin.Context) {
 	type Req struct {
-		AccountID       int32 `json:"account_id"`
-		OperationTypeID int32 `json:"operation_type_id"`
-		Amount          float64
+		AccountID       int32   `json:"account_id"`
+		OperationTypeID int32   `json:"operation_type_id"`
+		Amount          float64 `json:"amount"`
 	}
 
 	type Resp struct {
-		ID              int32
-		AccountID       int32 `json:"account_id"`
-		OperationTypeID int32 `json:"operation_type_id"`
-		Amount          float64
-		CreatedAt       string
+		ID              int32   `json:"id"`
+		AccountID       int32   `json:"account_id"`
+		OperationTypeID int32   `json:"operation_type_id"`
+		Amount          float64 `json:"amount"`
+		CreatedAt       string  `json:"created_at"`
 	}
 
 	// Read the JSON payload.
