@@ -11,7 +11,7 @@ import (
 	"pismo.io/util"
 )
 
-// TestCreateAccount checks whether an account can be created (POST) and fetched (GET).
+// TestCreateGetAccount checks whether an account can be created (POST) and fetched (GET).
 func TestCreateGetAccount(t *testing.T) {
 	// Make a POST request to create a new account.
 	docNumber := "test_document_1"
