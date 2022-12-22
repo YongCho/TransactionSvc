@@ -83,6 +83,5 @@ The project was developed in Visual Studio Code on a Linux machine. Go extension
 - Create a package for processing transactions. Don't call db adapter directly from the HTTP handler.
 - Add a foreign key relationship between the tables. You shouldn't be able to create a transaction with an account ID that doesn't exist.
 - Add necessary indexes.
-- Rename Dockerfile.pismo to Dockerfile.server.
 - Add make target for resetting the services (`make reset`).
 - Write tests.

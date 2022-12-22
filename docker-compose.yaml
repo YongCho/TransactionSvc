@@ -1,10 +1,10 @@
 version: '3' 
 
 services:
-  pismo:
+  pismo-api:
     build:
       context: .
-      dockerfile: Dockerfile.pismo
+      dockerfile: Dockerfile.api
     image: pismo
     restart: always
     ports:
@@ -31,11 +31,11 @@ services:
     volumes:
       - pismo-data:/var/lib/postgresql/data
 
-  pismo-init:
+  pismo-dbinit:
     build:
       context: .
-      dockerfile: Dockerfile.init
-    image: pismo-init
+      dockerfile: Dockerfile.dbinit
+    image: pismo-dbinit
     restart: 'on-failure:2'
     environment:
       # TODO: don't hardcode credentials

@@ -26,5 +26,5 @@ down:
 # Clean up all images, volumns, etc.
 .PHONY: clean
 clean: down
-	docker image rm -f pismo pismo-db pismo-init
+	docker image rm -f pismo pismo-db pismo-dbinit
 	docker volume rm -f pismo_pismo-data
