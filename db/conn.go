@@ -7,6 +7,7 @@ import (
 	"pismo.io/util"
 )
 
+// GetConnStr returns the DB connection string.
 func GetConnStr() string {
 	return fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s",
 		util.Env.GetDBHost(),
@@ -18,6 +19,7 @@ func GetConnStr() string {
 	)
 }
 
+// GetDBHandle opens and returns a sql.DB object.
 func GetDBHandle() (*sql.DB, error) {
 	connStr := GetConnStr()
 	conn, err := sql.Open("postgres", connStr)

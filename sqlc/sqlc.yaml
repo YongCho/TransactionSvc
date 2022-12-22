@@ -1,3 +1,7 @@
+# This is the config file for sqlc framework that is used in
+# generating the database code.
+# https://docs.sqlc.dev/en/stable/reference/config.html
+
 version: 2
 sql:
   - engine: postgresql

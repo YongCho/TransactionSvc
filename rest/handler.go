@@ -10,11 +10,13 @@ import (
 	"pismo.io/util"
 )
 
-// Handler implements the HTTP handler logic.
+// Handler implements the REST API handler logic.
 type Handler struct {
 	dbAdapter *db.DBAdapter
 }
 
+// GenericResponse is the response payload for any requests
+// that do not return specific data.
 type GenericResponse struct {
 	Status string `json:",omitempty"`
 	Error  string `json:",omitempty"`
@@ -62,7 +64,7 @@ func (a *Handler) CreateAccount(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-// GetAccount is the HTTP handler function for fetching an account.
+// GetAccount is the HTTP handler function for fetching an existing account.
 func (a *Handler) GetAccount(c *gin.Context) {
 	type Req struct {
 		ID int32 `uri:"id" binding:"required"`

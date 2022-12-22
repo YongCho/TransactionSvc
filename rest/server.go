@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Server encapsulates the logic for initializing the REST server.
+// Server encapsulates the logic for initializing the REST API server.
 type Server struct {
 	handler *Handler
 }
@@ -18,6 +18,8 @@ func NewServer(handler *Handler) *Server {
 	}
 }
 
+// Run sets up the endpoints and starts the server.
+// This is a blocking call.
 func (s *Server) Run(listenPort int) {
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.New()

@@ -12,22 +12,28 @@ import (
 )
 
 func main() {
+	// Create a database connection.
 	dbConn, err := db.GetDBHandle()
 	if err != nil {
 		log.Printf("Could not get DB handle: %s", err)
 		os.Exit(1)
 	}
+
+	// Create a database adapter object.
 	dbAdapter, err := db.NewDBAdapter(dbConn)
 	if err != nil {
 		log.Printf("Could not create DB adapter: %s", err)
 		os.Exit(1)
 	}
+
+	// Create a REST API handler object.
 	handler, err := rest.NewHandler(dbAdapter)
 	if err != nil {
 		log.Printf("Could not create API handler: %s", err)
 		os.Exit(1)
 	}
 
+	// Create and start the HTTP server.
 	server := rest.NewServer(handler)
 	server.Run(util.Env.GetListenPort())
 }

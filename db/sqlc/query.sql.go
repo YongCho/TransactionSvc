@@ -77,10 +77,14 @@ func (q *Queries) GetAccount(ctx context.Context, id int32) (Account, error) {
 }
 
 const listAccounts = `-- name: ListAccounts :many
+
 SELECT id, document_number FROM account
 ORDER BY id
 `
 
+// This script contains the SQL queries that are used for
+// interacting with the database. It is used by sqlc framework
+// to generate Go code that interacts with the database.
 func (q *Queries) ListAccounts(ctx context.Context) ([]Account, error) {
 	rows, err := q.db.QueryContext(ctx, listAccounts)
 	if err != nil {

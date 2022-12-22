@@ -1,3 +1,7 @@
+-- This script contains the SQL queries that are used for
+-- interacting with the database. It is used by sqlc framework
+-- to generate Go code that interacts with the database.
+
 -- name: ListAccounts :many
 SELECT * FROM account
 ORDER BY id;

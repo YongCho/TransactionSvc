@@ -1,3 +1,5 @@
+// This file contains functions for accessing all environment variables.
+
 package util
 
 import (
@@ -27,6 +29,7 @@ var Env = &envKey{
 	DBSSLMode:  "DB_SSL_MODE",
 }
 
+// GetListenPort returns the value of REST_PORT environment variable.
 func (g *envKey) GetListenPort() int {
 	portStr := os.Getenv(g.ListenPort)
 	if portStr == "" {
@@ -41,6 +44,7 @@ func (g *envKey) GetListenPort() int {
 	return portNum
 }
 
+// GetDBHost returns the value of DB_HOST environment variable.
 func (g *envKey) GetDBHost() string {
 	host := os.Getenv(g.DBHost)
 	if host == "" {
@@ -50,6 +54,7 @@ func (g *envKey) GetDBHost() string {
 	return host
 }
 
+// GetDBPort returns the value of DB_PORT environment variable.
 func (g *envKey) GetDBPort() int {
 	portStr := os.Getenv(g.DBPort)
 	if portStr == "" {
@@ -64,6 +69,7 @@ func (g *envKey) GetDBPort() int {
 	return portNum
 }
 
+// GetDBUser returns the value of DB_USER environment variable.
 func (g *envKey) GetDBUser() string {
 	v := os.Getenv(g.DBUser)
 	if v == "" {
@@ -73,6 +79,7 @@ func (g *envKey) GetDBUser() string {
 	return v
 }
 
+// GetDBPassword returns the value of DB_PASSWORD environment variable.
 func (g *envKey) GetDBPassword() string {
 	v := os.Getenv(g.DBPassword)
 	if v == "" {
@@ -82,6 +89,7 @@ func (g *envKey) GetDBPassword() string {
 	return v
 }
 
+// GetDBName returns the value of DB_DBNAME environment variable.
 func (g *envKey) GetDBName() string {
 	v := os.Getenv(g.DBName)
 	if v == "" {
@@ -91,6 +99,7 @@ func (g *envKey) GetDBName() string {
 	return v
 }
 
+// GetDBSSLMode returns the value of DB_SSL_MODE environment variable.
 func (g *envKey) GetDBSSLMode() string {
 	v := os.Getenv(g.DBSSLMode)
 	if v == "" {

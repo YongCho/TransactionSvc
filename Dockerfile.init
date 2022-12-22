@@ -1,3 +1,7 @@
+# This Dockerfile builds the database initialization container image.
+# The image contains a set of SQL scripts to initialize the database
+# and a bash script to drive the SQL scripts.
+
 FROM postgres:15.1
 RUN mkdir /initdb
 COPY ./init_db.sh /initdb

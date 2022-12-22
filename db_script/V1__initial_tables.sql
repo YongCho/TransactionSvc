@@ -1,3 +1,6 @@
+-- This script contains all DDL statements to create the
+-- database tables.
+
 CREATE TABLE IF NOT EXISTS account (
     id SERIAL PRIMARY KEY,
     document_number TEXT NOT NULL
