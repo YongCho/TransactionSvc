@@ -7,7 +7,6 @@ package sqlc
 
 import (
 	"context"
-	"database/sql"
 )
 
 const createAccount = `-- name: CreateAccount :one
@@ -24,8 +23,8 @@ func (q *Queries) CreateAccount(ctx context.Context, documentNumber string) (Acc
 }
 
 const createTransaction = `-- name: CreateTransaction :one
-INSERT INTO transaction (account_id, operation_type_id, amount, created_at)
-VALUES ($1, $2, $3, $4)
+INSERT INTO transaction (account_id, operation_type_id, amount)
+VALUES ($1, $2, $3)
 RETURNING id, account_id, operation_type_id, amount, created_at
 `
 
@@ -33,16 +32,10 @@ type CreateTransactionParams struct {
 	AccountID       int32
 	OperationTypeID int32
 	Amount          int64
-	CreatedAt       sql.NullTime
 }
 
 func (q *Queries) CreateTransaction(ctx context.Context, arg CreateTransactionParams) (Transaction, error) {
-	row := q.db.QueryRowContext(ctx, createTransaction,
-		arg.AccountID,
-		arg.OperationTypeID,
-		arg.Amount,
-		arg.CreatedAt,
-	)
+	row := q.db.QueryRowContext(ctx, createTransaction, arg.AccountID, arg.OperationTypeID, arg.Amount)
 	var i Transaction
 	err := row.Scan(
 		&i.ID,

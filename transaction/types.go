@@ -15,4 +15,5 @@ type Transaction struct {
 	AccountID       int32
 	OperationTypeID int32
 	Amount          int64
+	CreatedAt       time.Time
 }

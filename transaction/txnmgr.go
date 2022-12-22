@@ -56,5 +56,6 @@ func (t *TransactionMgr) CreateTransaction(accountID int32, opTypeID int32, amou
 		AccountID:       result.AccountID,
 		OperationTypeID: result.OperationTypeID,
 		Amount:          result.Amount,
+		CreatedAt:       result.CreatedAt,
 	}, nil
 }

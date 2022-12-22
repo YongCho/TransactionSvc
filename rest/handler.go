@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	txn "pismo.io/transaction"
@@ -110,6 +111,7 @@ func (a *Handler) CreateTransaction(c *gin.Context) {
 		AccountID       int32 `json:"account_id"`
 		OperationTypeID int32 `json:"operation_type_id"`
 		Amount          float64
+		CreatedAt       string
 	}
 
 	// Read the JSON payload.
@@ -122,15 +124,16 @@ func (a *Handler) CreateTransaction(c *gin.Context) {
 	}
 
 	// Create the transaction.
-	transaction, err := a.txnMgr.CreateTransaction(data.AccountID, data.OperationTypeID, data.Amount)
+	transaction, err := a.txnMgr.CreateTransaction(data.AccountID, txn.OpType(data.OperationTypeID), data.Amount)
 	if err != nil {
 		resp := GenericResponse{Error: fmt.Sprintf("Could not persist the transaction: %s", err)}
 		c.JSON(http.StatusInternalServerError, resp)
 		return
 	}
 
-	log.Printf("New Transaction ID: %d, Account ID: %d, Operation Type: %d, Amount: %d (cents)",
-		transaction.ID, transaction.AccountID, transaction.OperationTypeID, transaction.Amount)
+	createdAtStr := transaction.CreatedAt.Format(time.RFC3339)
+	log.Printf("New Transaction ID: %d, Account ID: %d, Operation Type: %d, Amount: %d (cents), CreatedAt: %s",
+		transaction.ID, transaction.AccountID, transaction.OperationTypeID, transaction.Amount, createdAtStr)
 
 	// Construct and send back the response.
 	dollar := util.CentsToDollar(transaction.Amount)
@@ -139,6 +142,7 @@ func (a *Handler) CreateTransaction(c *gin.Context) {
 		AccountID:       transaction.AccountID,
 		OperationTypeID: transaction.OperationTypeID,
 		Amount:          dollar,
+		CreatedAt:       createdAtStr,
 	}
 	c.JSON(http.StatusOK, resp)
 }

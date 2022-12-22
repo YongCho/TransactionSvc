@@ -5,7 +5,7 @@
 package sqlc
 
 import (
-	"database/sql"
+	"time"
 )
 
 type Account struct {
@@ -23,5 +23,5 @@ type Transaction struct {
 	AccountID       int32
 	OperationTypeID int32
 	Amount          int64
-	CreatedAt       sql.NullTime
+	CreatedAt       time.Time
 }

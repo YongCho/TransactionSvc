@@ -25,6 +25,6 @@ WHERE id = $1
 RETURNING *;
 
 -- name: CreateTransaction :one
-INSERT INTO transaction (account_id, operation_type_id, amount, created_at)
-VALUES ($1, $2, $3, $4)
+INSERT INTO transaction (account_id, operation_type_id, amount)
+VALUES ($1, $2, $3)
 RETURNING *;
