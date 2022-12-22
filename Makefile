@@ -12,6 +12,9 @@ POSTGRES_IMAGE := postgres:15.1
 DB_USER ?= pismo
 DB_PASSWORD ?= pismo
 
+# Port number to bind to for the REST API.
+REST_PORT ?= 8080
+
 # Generate code.
 .PHONY: generate
 generate:
@@ -25,6 +28,7 @@ dotenv:
 		echo "API_SERVER_IMAGE=$(API_SERVER_IMAGE)" >> .env && \
 		echo "DB_INIT_IMAGE=$(DB_INIT_IMAGE)" >> .env && \
 		echo "POSTGRES_IMAGE=$(POSTGRES_IMAGE)" >> .env && \
+		echo "REST_PORT=$(REST_PORT)" >> .env && \
 		echo "DB_USER=$(DB_USER)" >> .env && \
 		echo "DB_PASSWORD=$(DB_PASSWORD)" >> .env
 
@@ -36,7 +40,11 @@ build: dotenv generate
 # Bring up all services.
 .PHONY: up
 up: dotenv build
-	docker compose up
+	docker compose up -d
+
+.PHONY: logs
+logs:
+	docker compose logs -f
 
 # Stop and remove all services.
 .PHONY: down
@@ -52,3 +60,7 @@ clean: down
 # Clean up and rebuild the services from scratch.
 .PHONY: reset
 reset: clean up
+
+.PHONY: test
+test: up
+	REST_PORT=$(REST_PORT) go test -v ./cmd/systest/...

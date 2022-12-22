@@ -8,9 +8,9 @@ services:
     image: ${API_SERVER_IMAGE}
     restart: always
     ports:
-      - 8080:8080
+      - ${REST_PORT}:${REST_PORT}
     environment:
-      REST_PORT: 8080
+      REST_PORT: ${REST_PORT}
       DB_HOST: pismo-db
       DB_PORT: 5432
       DB_USER: ${DB_USER}

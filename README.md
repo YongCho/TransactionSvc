@@ -24,6 +24,20 @@ Use the following command to run all the services.
 make up
 ```
 
+### View Logs
+Use the following command to tail the container logs.
+
+```bash
+make logs
+```
+
+### Run Test
+Use the following command to run the tests.
+
+```
+make test
+```
+
 ### Stop and Clean Up
 Use the following command to stop the services and clean up all containers and data.
 

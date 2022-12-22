@@ -14,10 +14,10 @@ RUN go mod download
 # Copy the rest of the source files.
 COPY . .
 
-RUN go build -o pismo
+RUN go build -o apiserver ./cmd/server
 
 FROM alpine:3.17
-COPY --from=builder /build/pismo /app/
+COPY --from=builder /build/apiserver /app/
 
 WORKDIR /app
-CMD ["./pismo"]
+CMD ["./apiserver"]
