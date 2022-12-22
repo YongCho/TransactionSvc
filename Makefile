@@ -28,3 +28,7 @@ down:
 clean: down
 	docker image rm -f pismo pismo-db pismo-dbinit
 	docker volume rm -f pismo_pismo-data
+
+# Clean up and rebuild the services from scratch.
+.PHONY: reset
+reset: clean up
