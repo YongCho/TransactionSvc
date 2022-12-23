@@ -44,7 +44,7 @@ up: dotenv build
 
 .PHONY: logs
 logs:
-	docker compose logs -f
+	docker compose logs -f $(SVC)
 
 # Stop and remove all services.
 .PHONY: down
