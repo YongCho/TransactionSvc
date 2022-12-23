@@ -20,12 +20,12 @@ func NewServer(handler *Handler) *Server {
 
 // Run sets up the endpoints and starts the server.
 // This is a blocking call.
-func (s *Server) Run(listenPort int) {
+func (s *Server) Run(listenPort int) error {
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.New()
 	r.Use(gin.Recovery())
 	r.POST("/accounts", s.handler.CreateAccount)
 	r.GET("/accounts/:id", s.handler.GetAccount)
 	r.POST("/transactions", s.handler.CreateTransaction)
-	r.Run(fmt.Sprintf(":%d", listenPort))
+	return r.Run(fmt.Sprintf(":%d", listenPort))
 }

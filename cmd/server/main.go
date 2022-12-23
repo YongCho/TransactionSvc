@@ -43,5 +43,8 @@ func main() {
 
 	// Create and start the HTTP server.
 	server := rest.NewServer(handler)
-	server.Run(util.Env.GetListenPort())
+	err = server.Run(util.Env.GetListenPort())
+	if err != nil {
+		log.Printf("Server exited: %s", err)
+	}
 }
