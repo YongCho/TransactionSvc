@@ -24,6 +24,11 @@ UPDATE account SET document_number = $2
 WHERE id = $1
 RETURNING *;
 
+-- name: AddAccountBalance :one
+UPDATE account SET balance = balance + $2
+WHERE id = $1
+RETURNING *;
+
 -- name: CreateTransaction :one
 INSERT INTO transaction (account_id, operation_type_id, amount)
 VALUES ($1, $2, $3)

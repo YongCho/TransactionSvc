@@ -50,6 +50,16 @@ func (d *DBAdapter) UpdateAccount(accountID int32, documentNumber string) (sqlc.
 	return d.queries.UpdateAccount(ctx, args)
 }
 
+// AddAccountBalance adds fund to the account balance.
+func (d *DBAdapter) AddAccountBalance(accountID int32, amount int64) (sqlc.Account, error) {
+	ctx := context.Background()
+	args := sqlc.AddAccountBalanceParams{
+		ID:      accountID,
+		Balance: amount,
+	}
+	return d.queries.AddAccountBalance(ctx, args)
+}
+
 // DeleteAccount deletes an existing account.
 func (d *DBAdapter) DeleteAccount(accountID int32) error {
 	ctx := context.Background()
@@ -65,4 +75,14 @@ func (d *DBAdapter) CreateTransaction(accountID int32, operationTypeID int32, am
 		Amount:          amount,
 	}
 	return d.queries.CreateTransaction(ctx, args)
+}
+
+// GetDBHandle returns the raw DB handle.
+func (d *DBAdapter) GetDBHandle() *sql.DB {
+	return d.conn
+}
+
+// GetSqlcQueries returns the raw sqlc Queries object.
+func (d *DBAdapter) GetSqlcQueries() *sqlc.Queries {
+	return d.queries
 }

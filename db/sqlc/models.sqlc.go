@@ -11,6 +11,7 @@ import (
 type Account struct {
 	ID             int32
 	DocumentNumber string
+	Balance        int64
 }
 
 type OperationType struct {

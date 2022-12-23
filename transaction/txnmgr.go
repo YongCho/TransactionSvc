@@ -1,9 +1,11 @@
 package transaction
 
 import (
+	"context"
 	"fmt"
 
 	"pismo.io/db"
+	"pismo.io/db/sqlc"
 	"pismo.io/util"
 )
 
@@ -61,7 +63,39 @@ func (t *TransactionMgr) CreateTransaction(accountID int32, opType OpType, amoun
 
 	// Money value is stored in cents to avoid float precision issue.
 	amountCents := util.DollarToCents(amount)
-	result, err := t.dbAdapter.CreateTransaction(accountID, int32(opType), amountCents)
+
+	// Begin a new database transaction.
+	conn := t.dbAdapter.GetDBHandle()
+	tx, err := conn.Begin()
+	if err != nil {
+		return Transaction{}, err
+	}
+	defer tx.Rollback()
+	qtx := t.dbAdapter.GetSqlcQueries().WithTx(tx)
+
+	// Create the new transaction record.
+	createParam := sqlc.CreateTransactionParams{
+		AccountID:       accountID,
+		OperationTypeID: int32(opType),
+		Amount:          amountCents,
+	}
+	result, err := qtx.CreateTransaction(context.Background(), createParam)
+	if err != nil {
+		return Transaction{}, err
+	}
+
+	// Update the account balance.
+	addBalanceParam := sqlc.AddAccountBalanceParams{
+		ID:      accountID,
+		Balance: amountCents,
+	}
+	_, err = qtx.AddAccountBalance(context.Background(), addBalanceParam)
+	if err != nil {
+		return Transaction{}, err
+	}
+
+	// Commit the database transaction.
+	err = tx.Commit()
 	if err != nil {
 		return Transaction{}, err
 	}

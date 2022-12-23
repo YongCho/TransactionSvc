@@ -3,7 +3,8 @@
 
 CREATE TABLE IF NOT EXISTS account (
     id SERIAL PRIMARY KEY,
-    document_number TEXT NOT NULL
+    document_number TEXT NOT NULL,
+    balance BIGINT NOT NULL DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS operation_type (

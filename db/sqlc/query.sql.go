@@ -9,16 +9,34 @@ import (
 	"context"
 )
 
+const addAccountBalance = `-- name: AddAccountBalance :one
+UPDATE account SET balance = balance + $2
+WHERE id = $1
+RETURNING id, document_number, balance
+`
+
+type AddAccountBalanceParams struct {
+	ID      int32
+	Balance int64
+}
+
+func (q *Queries) AddAccountBalance(ctx context.Context, arg AddAccountBalanceParams) (Account, error) {
+	row := q.db.QueryRowContext(ctx, addAccountBalance, arg.ID, arg.Balance)
+	var i Account
+	err := row.Scan(&i.ID, &i.DocumentNumber, &i.Balance)
+	return i, err
+}
+
 const createAccount = `-- name: CreateAccount :one
 INSERT INTO account (document_number)
 VALUES ($1)
-RETURNING id, document_number
+RETURNING id, document_number, balance
 `
 
 func (q *Queries) CreateAccount(ctx context.Context, documentNumber string) (Account, error) {
 	row := q.db.QueryRowContext(ctx, createAccount, documentNumber)
 	var i Account
-	err := row.Scan(&i.ID, &i.DocumentNumber)
+	err := row.Scan(&i.ID, &i.DocumentNumber, &i.Balance)
 	return i, err
 }
 
@@ -58,20 +76,20 @@ func (q *Queries) DeleteAccount(ctx context.Context, id int32) error {
 }
 
 const getAccount = `-- name: GetAccount :one
-SELECT id, document_number FROM account
+SELECT id, document_number, balance FROM account
 WHERE id = $1
 `
 
 func (q *Queries) GetAccount(ctx context.Context, id int32) (Account, error) {
 	row := q.db.QueryRowContext(ctx, getAccount, id)
 	var i Account
-	err := row.Scan(&i.ID, &i.DocumentNumber)
+	err := row.Scan(&i.ID, &i.DocumentNumber, &i.Balance)
 	return i, err
 }
 
 const listAccounts = `-- name: ListAccounts :many
 
-SELECT id, document_number FROM account
+SELECT id, document_number, balance FROM account
 ORDER BY id
 `
 
@@ -87,7 +105,7 @@ func (q *Queries) ListAccounts(ctx context.Context) ([]Account, error) {
 	var items []Account
 	for rows.Next() {
 		var i Account
-		if err := rows.Scan(&i.ID, &i.DocumentNumber); err != nil {
+		if err := rows.Scan(&i.ID, &i.DocumentNumber, &i.Balance); err != nil {
 			return nil, err
 		}
 		items = append(items, i)
@@ -104,7 +122,7 @@ func (q *Queries) ListAccounts(ctx context.Context) ([]Account, error) {
 const updateAccount = `-- name: UpdateAccount :one
 UPDATE account SET document_number = $2
 WHERE id = $1
-RETURNING id, document_number
+RETURNING id, document_number, balance
 `
 
 type UpdateAccountParams struct {
@@ -115,6 +133,6 @@ type UpdateAccountParams struct {
 func (q *Queries) UpdateAccount(ctx context.Context, arg UpdateAccountParams) (Account, error) {
 	row := q.db.QueryRowContext(ctx, updateAccount, arg.ID, arg.DocumentNumber)
 	var i Account
-	err := row.Scan(&i.ID, &i.DocumentNumber)
+	err := row.Scan(&i.ID, &i.DocumentNumber, &i.Balance)
 	return i, err
 }
